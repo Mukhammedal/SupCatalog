@@ -356,3 +356,20 @@ export async function archiveProduct(formData: FormData) {
   revalidateDashboard();
   redirect("/dashboard/products");
 }
+
+export async function activateProduct(formData: FormData) {
+  const profile = await requireRole("client");
+  const productId = stringValue(formData.get("productId"));
+
+  if (productId && profile.tenant_id) {
+    const supabase = await createClient();
+    await supabase
+      .from("products")
+      .update({ status: "active" })
+      .eq("id", productId)
+      .eq("tenant_id", profile.tenant_id);
+  }
+
+  revalidateDashboard();
+  redirect("/dashboard/products");
+}

@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { logout } from "@/app/login/actions";
 import {
+  activateProduct,
   addCategory,
   addProduct,
   archiveProduct,
@@ -349,10 +350,20 @@ export function ProductList({
                 </p>
               </div>
 
-              <form action={archiveProduct}>
+              <form
+                action={
+                  product.status === "archived" ? activateProduct : archiveProduct
+                }
+              >
                 <input name="productId" type="hidden" value={product.id} />
-                <button className="h-9 rounded-2xl border border-rose-200 bg-rose-50 px-4 text-sm font-semibold text-rose-700 transition hover:bg-rose-100">
-                  В архив
+                <button
+                  className={
+                    product.status === "archived"
+                      ? "h-9 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 text-sm font-semibold text-emerald-700 transition hover:bg-emerald-100"
+                      : "h-9 rounded-2xl border border-rose-200 bg-rose-50 px-4 text-sm font-semibold text-rose-700 transition hover:bg-rose-100"
+                  }
+                >
+                  {product.status === "archived" ? "Активировать" : "В архив"}
                 </button>
               </form>
             </div>

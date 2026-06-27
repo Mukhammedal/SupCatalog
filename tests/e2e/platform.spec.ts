@@ -368,6 +368,17 @@ test("seller can update store settings and catalog", async ({ page }) => {
   await expect(
     page.getByRole("heading", { name: "Wireless Headphones Pro Max" }),
   ).toBeVisible();
+  await expect(
+    updatedProductCard.getByRole("button", { name: "Активировать" }),
+  ).toBeVisible();
+  await updatedProductCard.getByRole("button", { name: "Активировать" }).click();
+
+  await page.getByRole("button", { name: /^Активные/ }).click();
+  await expect(
+    page.getByRole("heading", { name: "Wireless Headphones Pro Max" }),
+  ).toBeVisible({ timeout: 15000 });
+  await expect(updatedProductCard).toContainText("Активен");
+  await expect(updatedProductCard.getByRole("button", { name: "В архив" })).toBeVisible();
 });
 
 test("seller stays signed in after opening storefront", async ({ page }) => {

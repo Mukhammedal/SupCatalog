@@ -2,7 +2,11 @@
 
 import Image from "next/image";
 import { useMemo, useState } from "react";
-import { archiveProduct, updateProduct } from "@/app/dashboard/actions";
+import {
+  activateProduct,
+  archiveProduct,
+  updateProduct,
+} from "@/app/dashboard/actions";
 import type { Category, Product } from "@/app/dashboard/data";
 import { ProductPhotoInput } from "./product-photo-input";
 
@@ -63,9 +67,12 @@ function ProductArchiveForm({
 }) {
   if (product.status === "archived") {
     return (
-      <span className="inline-flex h-9 items-center rounded-2xl border border-slate-200 bg-slate-50 px-4 text-sm font-semibold text-slate-500">
-        В архиве
-      </span>
+      <form action={activateProduct}>
+        <input name="productId" type="hidden" value={product.id} />
+        <button className="h-9 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 text-sm font-semibold text-emerald-700 transition hover:bg-emerald-100">
+          Активировать
+        </button>
+      </form>
     );
   }
 
