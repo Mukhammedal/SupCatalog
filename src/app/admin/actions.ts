@@ -227,54 +227,73 @@ export async function resetClientPassword(
   _previousState: ResetClientPasswordState,
   formData: FormData,
 ): Promise<ResetClientPasswordState> {
-  await requireRole("superadmin");
+  try {
+    await requireRole("superadmin");
 
-  if (!hasSupabaseAdminKey()) {
+    if (!hasSupabaseAdminKey()) {
+      return {
+        status: "error",
+        message:
+          "Не добавлен SUPABASE_SECRET_KEY или SUPABASE_SERVICE_ROLE_KEY в .env.local.",
+      };
+    }
+
+    const profileId = String(formData.get("profileId") ?? "");
+    const admin = createAdminClient();
+
+    const { data: profile, error: profileError } = await admin
+      .from("profiles")
+      .select("id, email, role")
+      .eq("id", profileId)
+      .eq("role", "client")
+      .single<{ id: string; email: string; role: "client" }>();
+
+    if (profileError || !profile) {
+      return {
+        status: "error",
+        message: "Клиент не найден.",
+      };
+    }
+
+    const password = generatePassword();
+    const { data: authUser, error: authUserError } =
+      await admin.auth.admin.getUserById(profile.id);
+
+    if (authUserError) {
+      return {
+        status: "error",
+        message: authUserError.message,
+      };
+    }
+
+    const { error } = await admin.auth.admin.updateUserById(profile.id, {
+      password,
+      app_metadata: {
+        ...(authUser.user?.app_metadata ?? {}),
+        visible_password: password,
+      },
+    });
+
+    if (error) {
+      return {
+        status: "error",
+        message: error.message,
+      };
+    }
+
+    return {
+      status: "success",
+      message: "Новый временный пароль создан.",
+      email: profile.email,
+      password,
+    };
+  } catch (error) {
     return {
       status: "error",
       message:
-        "Не добавлен SUPABASE_SECRET_KEY или SUPABASE_SERVICE_ROLE_KEY в .env.local.",
+        error instanceof Error
+          ? error.message
+          : "Не удалось создать новый пароль.",
     };
   }
-
-  const profileId = String(formData.get("profileId") ?? "");
-  const admin = createAdminClient();
-
-  const { data: profile, error: profileError } = await admin
-    .from("profiles")
-    .select("id, email, role")
-    .eq("id", profileId)
-    .eq("role", "client")
-    .single<{ id: string; email: string; role: "client" }>();
-
-  if (profileError || !profile) {
-    return {
-      status: "error",
-      message: "Клиент не найден.",
-    };
-  }
-
-  const password = generatePassword();
-  const { data: authUser } = await admin.auth.admin.getUserById(profile.id);
-  const { error } = await admin.auth.admin.updateUserById(profile.id, {
-    password,
-    app_metadata: {
-      ...(authUser.user?.app_metadata ?? {}),
-      visible_password: password,
-    },
-  });
-
-  if (error) {
-    return {
-      status: "error",
-      message: error.message,
-    };
-  }
-
-  return {
-    status: "success",
-    message: "Новый временный пароль создан.",
-    email: profile.email,
-    password,
-  };
 }

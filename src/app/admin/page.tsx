@@ -93,7 +93,7 @@ export default async function AdminPage() {
       perPage: 1000,
     });
 
-    for (const user of authUsers.users) {
+    for (const user of authUsers?.users ?? []) {
       const visiblePassword = user.app_metadata?.visible_password;
       if (typeof visiblePassword === "string" && visiblePassword) {
         visiblePasswordsByProfileId.set(user.id, visiblePassword);

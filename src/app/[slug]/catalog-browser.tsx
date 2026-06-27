@@ -74,10 +74,6 @@ function catalogPath(slug: string, mode: PriceMode) {
   return `/${slug}${mode === "wholesale" ? "/opt" : ""}`;
 }
 
-function isGeneratedPlaceholder(photo?: string) {
-  return Boolean(photo?.includes("placehold.co"));
-}
-
 function ProductVisual({
   categoryName,
   product,
@@ -87,7 +83,7 @@ function ProductVisual({
 }) {
   const photo = product.photos[0];
 
-  if (photo && !isGeneratedPlaceholder(photo)) {
+  if (photo) {
     return (
       <Image
         alt={product.name}
@@ -150,7 +146,7 @@ function ProductCard({
             </h3>
           </Link>
           {product.description ? (
-            <p className="mt-1 hidden text-xs leading-4 text-slate-500 sm:line-clamp-2">
+            <p className="mt-1 line-clamp-2 text-xs leading-4 text-slate-500">
               {product.description}
             </p>
           ) : null}
