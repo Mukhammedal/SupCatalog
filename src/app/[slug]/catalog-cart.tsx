@@ -181,9 +181,9 @@ export function CatalogCart({
 
   return (
     <>
-      <div className="fixed bottom-3 left-3 right-3 z-30 sm:bottom-5 sm:left-auto sm:right-5">
+      <div className="fixed left-3 right-3 z-30 bottom-[calc(0.75rem+env(safe-area-inset-bottom))] sm:bottom-5 sm:left-auto sm:right-5">
         <button
-          className="h-12 w-full rounded-xl bg-emerald-500 px-4 text-sm font-semibold text-white shadow-[0_14px_32px_rgba(16,185,129,0.30)] transition hover:bg-emerald-600 sm:h-11 sm:w-auto"
+          className="h-12 w-full rounded-xl bg-emerald-500 px-4 text-base font-semibold text-white shadow-[0_14px_32px_rgba(16,185,129,0.30)] transition hover:bg-emerald-600 sm:h-11 sm:w-auto sm:text-sm"
           onClick={() => setIsOpen(true)}
           type="button"
         >

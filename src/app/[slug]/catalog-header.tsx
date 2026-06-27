@@ -13,7 +13,7 @@ function StoreMark({ tenant }: { tenant: HeaderTenant }) {
     return (
       <Image
         alt={tenant.name}
-        className="h-11 w-11 rounded-2xl object-cover shadow-sm ring-1 ring-slate-200"
+        className="h-10 w-10 rounded-2xl object-cover shadow-sm ring-1 ring-slate-200 sm:h-11 sm:w-11"
         height={44}
         src={tenant.logo_url}
         width={44}
@@ -22,7 +22,7 @@ function StoreMark({ tenant }: { tenant: HeaderTenant }) {
   }
 
   return (
-    <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-950 text-lg font-bold text-white shadow-lg shadow-slate-200">
+    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-slate-950 text-base font-bold text-white shadow-lg shadow-slate-200 sm:h-11 sm:w-11 sm:text-lg">
       {tenant.name.slice(0, 1).toUpperCase()}
     </div>
   );
@@ -37,10 +37,10 @@ export async function CatalogHeader({
 }) {
   return (
     <header className="border-b border-slate-200 bg-white">
-      <div className="mx-auto flex h-18 w-full max-w-[1680px] items-center justify-between gap-4 px-5 sm:px-8 xl:px-10">
-        <Link className="flex min-w-0 items-center gap-3" href={basePath}>
+      <div className="mx-auto flex h-16 w-full max-w-[1680px] items-center justify-between gap-3 px-3 sm:h-18 sm:px-8 xl:px-10">
+        <Link className="flex min-w-0 items-center gap-2.5 sm:gap-3" href={basePath}>
           <StoreMark tenant={tenant} />
-          <span className="max-w-[48vw] truncate text-lg font-semibold tracking-tight text-slate-950 sm:max-w-none sm:text-xl">
+          <span className="min-w-0 max-w-[52vw] truncate text-base font-semibold tracking-tight text-slate-950 sm:max-w-none sm:text-xl">
             {tenant.name}
           </span>
         </Link>

@@ -27,27 +27,27 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
   const errorMessage = params.error ? errorMessages[params.error] : null;
 
   return (
-    <main className="min-h-screen bg-[#eef2f7] px-5 py-8 text-slate-950 sm:px-8">
-      <section className="mx-auto grid min-h-[calc(100vh-4rem)] w-full max-w-6xl items-center gap-8 lg:grid-cols-[minmax(0,1fr)_430px]">
+    <main className="min-h-screen overflow-x-hidden bg-[#eef2f7] px-4 py-5 text-slate-950 sm:px-8 sm:py-8">
+      <section className="mx-auto grid min-h-[calc(100vh-2.5rem)] w-full max-w-6xl items-center gap-5 sm:min-h-[calc(100vh-4rem)] sm:gap-8 lg:grid-cols-[minmax(0,1fr)_430px]">
         <div className="max-w-2xl">
-          <div className="mb-8 flex items-center gap-3">
-            <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-950 text-xl font-bold text-white shadow-lg shadow-slate-300">
+          <div className="mb-5 flex min-w-0 items-center gap-3 sm:mb-8">
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-slate-950 text-lg font-bold text-white shadow-lg shadow-slate-300 sm:h-12 sm:w-12 sm:text-xl">
               A
             </span>
-            <span className="text-2xl font-semibold tracking-tight">
+            <span className="min-w-0 truncate text-xl font-semibold tracking-tight sm:text-2xl">
               Ali group product
             </span>
           </div>
 
-          <p className="mb-5 text-sm font-bold uppercase tracking-[0.18em] text-emerald-600">
+          <p className="mb-3 text-xs font-bold uppercase tracking-[0.16em] text-emerald-600 sm:mb-5 sm:text-sm sm:tracking-[0.18em]">
             Внутренняя платформа
           </p>
-          <h1 className="text-5xl font-semibold leading-tight tracking-tight sm:text-6xl">
+          <h1 className="text-[2.35rem] font-semibold leading-[1.08] tracking-tight sm:text-6xl">
             {isSellerLogin
               ? "Вход продавца в кабинет"
               : "Управление магазинами и каталогами"}
           </h1>
-          <p className="mt-6 max-w-xl text-lg leading-8 text-slate-600">
+          <p className="mt-4 max-w-xl text-base leading-7 text-slate-600 sm:mt-6 sm:text-lg sm:leading-8">
             {isSellerLogin
               ? "Введите email и пароль, которые выдал владелец платформы."
               : "Войдите в аккаунт, чтобы создавать продавцов, продлевать подписки или наполнять свой каталог товарами."}
@@ -56,17 +56,17 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
 
         <form
           action={login}
-          className="rounded-[1.75rem] border border-slate-200 bg-white p-6 shadow-[0_24px_70px_rgba(15,23,42,0.10)]"
+          className="rounded-[1.35rem] border border-slate-200 bg-white p-4 shadow-[0_24px_70px_rgba(15,23,42,0.10)] sm:rounded-[1.75rem] sm:p-6"
         >
-          <div className="mb-7">
-            <h2 className="text-3xl font-semibold tracking-tight">Войти</h2>
+          <div className="mb-5 sm:mb-7">
+            <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">Войти</h2>
           </div>
 
           <label className="block text-sm font-semibold text-slate-700">
             Email
             <input
               autoComplete="email"
-              className="mt-2 h-12 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 text-base outline-none transition focus:border-slate-500 focus:bg-white"
+              className="mt-2 h-12 w-full min-w-0 rounded-2xl border border-slate-200 bg-slate-50 px-4 text-base outline-none transition focus:border-slate-500 focus:bg-white"
               name="email"
               placeholder="email@example.com"
               required
@@ -78,7 +78,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
             Пароль
             <input
               autoComplete="current-password"
-              className="mt-2 h-12 w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 text-base outline-none transition focus:border-slate-500 focus:bg-white"
+              className="mt-2 h-12 w-full min-w-0 rounded-2xl border border-slate-200 bg-slate-50 px-4 text-base outline-none transition focus:border-slate-500 focus:bg-white"
               name="password"
               placeholder="Введите пароль"
               required

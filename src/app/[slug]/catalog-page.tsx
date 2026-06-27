@@ -281,7 +281,7 @@ export async function CatalogPage({
     <main className="min-h-screen overflow-x-hidden bg-[#f5f6f8] text-slate-950">
       <CatalogHeader basePath={basePath} tenant={tenant} />
 
-      <section className="mx-auto w-full max-w-[1680px] px-3 py-4 sm:px-6 sm:py-6 lg:px-8 xl:px-10">
+      <section className="mx-auto w-full max-w-[1680px] px-3 py-3 pb-24 sm:px-6 sm:py-6 sm:pb-6 lg:px-8 xl:px-10">
         {activeProducts.length === 0 ? (
           <div>
             <EmptyCatalog tenant={tenant} />

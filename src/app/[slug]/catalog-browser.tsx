@@ -130,7 +130,7 @@ function ProductCard({
   return (
     <article className="group h-full min-w-0 overflow-hidden rounded-[1.05rem] border border-slate-200 bg-white shadow-[0_10px_24px_rgba(15,23,42,0.06)] transition duration-200 hover:-translate-y-0.5 hover:shadow-[0_16px_36px_rgba(15,23,42,0.10)] sm:rounded-[1.15rem]">
       <Link
-        className="relative block aspect-square min-w-0 overflow-hidden bg-slate-100 sm:aspect-[4/2.65]"
+        className="relative block aspect-[16/11] min-w-0 overflow-hidden bg-slate-100 sm:aspect-[4/2.65]"
         href={productHref}
       >
         {categoryName ? (
@@ -142,10 +142,10 @@ function ProductCard({
         <ProductVisual categoryName={categoryName} product={product} />
       </Link>
 
-      <div className="min-w-0 p-2.5 sm:p-3">
-        <div className="min-h-11 sm:min-h-12">
+      <div className="min-w-0 p-3 sm:p-3">
+        <div className="min-h-12">
           <Link href={productHref}>
-            <h3 className="line-clamp-2 text-[13px] font-semibold leading-4 text-slate-950 transition hover:text-emerald-600 sm:text-sm sm:leading-5">
+            <h3 className="line-clamp-2 text-sm font-semibold leading-5 text-slate-950 transition hover:text-emerald-600">
               {product.name}
             </h3>
           </Link>
@@ -178,9 +178,9 @@ function ProductCard({
           </span>
         </div>
 
-        <form className="mt-2 grid min-w-0 grid-cols-[44px_minmax(0,1fr)] gap-1.5 sm:grid-cols-[52px_1fr] sm:gap-2">
+        <form className="mt-2 grid min-w-0 grid-cols-[52px_minmax(0,1fr)] gap-2">
           <input
-            className="h-9 min-w-0 rounded-xl border border-slate-200 bg-slate-50 px-1.5 text-center text-sm font-semibold outline-none transition focus:border-slate-500 focus:bg-white sm:px-2"
+            className="h-10 min-w-0 rounded-xl border border-slate-200 bg-slate-50 px-2 text-center text-sm font-semibold outline-none transition focus:border-slate-500 focus:bg-white"
             defaultValue={1}
             min={1}
             max={Math.max(product.quantity, 1)}
@@ -188,7 +188,7 @@ function ProductCard({
             type="number"
           />
           <button
-            className="h-9 min-w-0 rounded-xl bg-emerald-500 px-2 text-xs font-bold text-white shadow-lg shadow-emerald-100 transition hover:bg-emerald-600 disabled:cursor-not-allowed disabled:bg-slate-300 disabled:shadow-none sm:px-3 sm:text-sm"
+            className="h-10 min-w-0 rounded-xl bg-emerald-500 px-3 text-sm font-bold text-white shadow-lg shadow-emerald-100 transition hover:bg-emerald-600 disabled:cursor-not-allowed disabled:bg-slate-300 disabled:shadow-none"
             data-add-to-cart={product.id}
             disabled={product.quantity <= 0}
             type="button"
@@ -363,8 +363,8 @@ export function CatalogBrowser({
   }
 
   return (
-    <div className="grid gap-3 lg:grid-cols-[240px_minmax(0,1fr)] xl:grid-cols-[260px_minmax(0,1fr)] xl:gap-6">
-      <aside className="lg:self-start">
+    <div className="grid w-full min-w-0 gap-3 overflow-hidden lg:grid-cols-[240px_minmax(0,1fr)] xl:grid-cols-[260px_minmax(0,1fr)] xl:gap-6">
+      <aside className="min-w-0 lg:self-start">
         <div className="overflow-hidden rounded-[1.15rem] border border-slate-200 bg-white shadow-[0_10px_24px_rgba(15,23,42,0.04)]">
           <div className="border-b border-slate-100 p-3 sm:p-3">
             <p className="text-sm font-semibold">Категории</p>
@@ -372,12 +372,12 @@ export function CatalogBrowser({
               {categories.length} разделов
             </p>
           </div>
-          <div className="flex gap-2 overflow-x-auto p-2 lg:grid lg:overflow-visible lg:p-2.5">
+          <div className="flex max-w-full gap-2 overflow-x-auto overscroll-x-contain p-2 lg:grid lg:overflow-visible lg:p-2.5">
             <button
               className={
                 !categoryId
-                  ? "max-w-48 shrink-0 truncate rounded-xl bg-slate-950 px-3 py-2 text-left text-sm font-bold text-white"
-                  : "max-w-48 shrink-0 truncate rounded-xl px-3 py-2 text-left text-sm font-semibold text-slate-600 transition hover:bg-slate-50"
+                  ? "max-w-40 shrink-0 truncate rounded-xl bg-slate-950 px-3 py-2 text-left text-sm font-bold text-white sm:max-w-48"
+                  : "max-w-40 shrink-0 truncate rounded-xl px-3 py-2 text-left text-sm font-semibold text-slate-600 transition hover:bg-slate-50 sm:max-w-48"
               }
               onClick={() => updateFilter(() => setCategoryId(""))}
               type="button"
@@ -388,8 +388,8 @@ export function CatalogBrowser({
               <button
                 className={
                   categoryId === category.id
-                    ? "max-w-48 shrink-0 truncate rounded-xl bg-slate-950 px-3 py-2 text-left text-sm font-bold text-white"
-                    : "max-w-48 shrink-0 truncate rounded-xl px-3 py-2 text-left text-sm font-semibold text-slate-600 transition hover:bg-slate-50"
+                    ? "max-w-40 shrink-0 truncate rounded-xl bg-slate-950 px-3 py-2 text-left text-sm font-bold text-white sm:max-w-48"
+                    : "max-w-40 shrink-0 truncate rounded-xl px-3 py-2 text-left text-sm font-semibold text-slate-600 transition hover:bg-slate-50 sm:max-w-48"
                 }
                 key={category.id}
                 onClick={() => updateFilter(() => setCategoryId(category.id))}
@@ -404,11 +404,11 @@ export function CatalogBrowser({
 
       <div className="min-w-0 overflow-hidden">
         <form
-          className="grid grid-cols-2 gap-2 rounded-[1.15rem] border border-slate-200 bg-white p-2 shadow-[0_10px_24px_rgba(15,23,42,0.04)] sm:p-2.5 md:grid-cols-2 xl:grid-cols-[minmax(220px,1fr)_105px_105px_120px_auto_auto]"
+          className="grid min-w-0 grid-cols-1 gap-2 overflow-hidden rounded-[1.15rem] border border-slate-200 bg-white p-2 shadow-[0_10px_24px_rgba(15,23,42,0.04)] sm:grid-cols-2 sm:p-2.5 xl:grid-cols-[minmax(220px,1fr)_105px_105px_120px_auto_auto]"
           onSubmit={(event) => event.preventDefault()}
         >
           <input
-            className="col-span-2 h-10 rounded-xl border border-slate-200 bg-slate-50 px-3 text-sm outline-none transition focus:border-slate-500 focus:bg-white xl:col-span-1"
+            className="h-11 min-w-0 rounded-xl border border-slate-200 bg-slate-50 px-3 text-base outline-none transition focus:border-slate-500 focus:bg-white sm:col-span-2 sm:h-10 sm:text-sm xl:col-span-1"
             name="q"
             onChange={(event) =>
               updateFilter(() => setQuery(event.target.value))
@@ -417,7 +417,7 @@ export function CatalogBrowser({
             value={query}
           />
           <input
-            className="h-10 min-w-0 rounded-xl border border-slate-200 bg-slate-50 px-3 text-sm outline-none transition focus:border-slate-500 focus:bg-white"
+            className="h-11 min-w-0 rounded-xl border border-slate-200 bg-slate-50 px-3 text-base outline-none transition focus:border-slate-500 focus:bg-white sm:h-10 sm:text-sm"
             min="0"
             name="min"
             onChange={(event) =>
@@ -428,7 +428,7 @@ export function CatalogBrowser({
             value={minPrice}
           />
           <input
-            className="h-10 min-w-0 rounded-xl border border-slate-200 bg-slate-50 px-3 text-sm outline-none transition focus:border-slate-500 focus:bg-white"
+            className="h-11 min-w-0 rounded-xl border border-slate-200 bg-slate-50 px-3 text-base outline-none transition focus:border-slate-500 focus:bg-white sm:h-10 sm:text-sm"
             min="0"
             name="max"
             onChange={(event) =>
@@ -439,7 +439,7 @@ export function CatalogBrowser({
             value={maxPrice}
           />
           <select
-            className="h-10 min-w-0 rounded-xl border border-slate-200 bg-slate-50 px-3 text-sm outline-none transition focus:border-slate-500 focus:bg-white"
+            className="h-11 min-w-0 rounded-xl border border-slate-200 bg-slate-50 px-3 text-base outline-none transition focus:border-slate-500 focus:bg-white sm:h-10 sm:text-sm"
             name="stock"
             onChange={(event) =>
               updateFilter(() => setStock(event.target.value))
@@ -450,21 +450,21 @@ export function CatalogBrowser({
             <option value="in">В наличии</option>
           </select>
           <button
-            className="h-10 rounded-xl border border-slate-200 px-3 text-sm font-bold text-slate-500 transition hover:bg-slate-50"
+            className="h-11 min-w-0 rounded-xl border border-slate-200 px-3 text-base font-bold text-slate-500 transition hover:bg-slate-50 sm:h-10 sm:text-sm"
             onClick={resetFilters}
             type="button"
           >
             Сброс
           </button>
           <Link
-            className="inline-flex h-10 items-center justify-center rounded-xl bg-slate-950 px-4 text-sm font-bold text-white transition hover:bg-slate-800"
+            className="inline-flex h-11 min-w-0 items-center justify-center rounded-xl bg-slate-950 px-4 text-base font-bold text-white transition hover:bg-slate-800 sm:h-10 sm:text-sm"
             href={alternateHref}
           >
             {mode === "retail" ? "Опт" : "Розница"}
           </Link>
         </form>
 
-        <p className="mt-3 text-sm font-semibold text-slate-500 sm:mt-4">
+        <p className="mt-3 text-sm font-semibold leading-5 text-slate-500 sm:mt-4">
           {modeLabel}: показано {pageStart}-{pageEnd} из{" "}
           {visibleProducts.length} товаров
         </p>
@@ -472,7 +472,7 @@ export function CatalogBrowser({
         {visibleProducts.length ? (
           <>
             <div
-              className="mt-3 grid min-w-0 grid-cols-2 gap-2.5 sm:mt-4 sm:gap-4 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"
+              className="mt-3 grid min-w-0 grid-cols-1 gap-3 sm:mt-4 sm:grid-cols-2 sm:gap-4 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"
             >
               {paginatedProducts.map((product) => (
                 <ProductCard

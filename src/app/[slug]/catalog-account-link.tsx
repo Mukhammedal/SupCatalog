@@ -75,7 +75,7 @@ export function CatalogAccountLink({ tenantId }: { tenantId: string }) {
   return (
     <Link
       aria-disabled={state.loading}
-      className={`inline-flex h-11 min-w-[96px] items-center justify-center rounded-2xl px-5 shadow-sm transition ${
+      className={`inline-flex h-10 min-w-[76px] items-center justify-center rounded-2xl px-4 text-sm shadow-sm transition sm:h-11 sm:min-w-[96px] sm:px-5 ${
         state.loading
           ? "pointer-events-none bg-slate-100 text-transparent"
           : "bg-slate-950 text-white hover:bg-slate-800"
