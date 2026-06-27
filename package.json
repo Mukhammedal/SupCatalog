@@ -7,6 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "load:k6": "k6 run tests/load/catalog-load.k6.js",
+    "load:smoke": "node tests/load/catalog-smoke.mjs",
     "test:e2e": "playwright test"
   },
   "dependencies": {

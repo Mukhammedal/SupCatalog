@@ -2,7 +2,6 @@
 
 import { useRouter } from "next/navigation";
 import { useRef, useState, useTransition } from "react";
-import { createCategoryFromProductForm } from "./actions";
 
 type InlineCategoryState = {
   message: string;
@@ -22,7 +21,17 @@ export function CategoryInlineCreate() {
     const name = inputRef.current?.value ?? "";
 
     startTransition(async () => {
-      const result = await createCategoryFromProductForm(name);
+      const response = await fetch("/dashboard/categories/inline", {
+        body: JSON.stringify({ name }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+      });
+      const result = (await response.json().catch(() => ({
+        message: "Категория не сохранилась. Попробуй ещё раз.",
+        status: "error",
+      }))) as InlineCategoryState;
 
       setState(result);
 

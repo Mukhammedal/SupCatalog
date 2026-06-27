@@ -12,8 +12,10 @@ export type E2EState = {
     password: string;
   };
   adminTenant: {
+    categoryId: string;
     id: string;
     name: string;
+    productId: string;
     slug: string;
   };
   adminClient: {

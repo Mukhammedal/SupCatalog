@@ -199,6 +199,44 @@ export default async function globalSetup() {
     throw new Error(adminClientProfileError.message);
   }
 
+  const { data: adminCategory, error: adminCategoryError } = await admin
+    .from("categories")
+    .insert({
+      tenant_id: adminTenant.id,
+      name: `Admin Private ${suffix}`,
+    })
+    .select("id, name")
+    .single<{ id: string; name: string }>();
+
+  if (adminCategoryError || !adminCategory) {
+    throw new Error(
+      adminCategoryError?.message ?? "Failed to seed admin tenant category.",
+    );
+  }
+
+  const { data: adminProduct, error: adminProductError } = await admin
+    .from("products")
+    .insert({
+      tenant_id: adminTenant.id,
+      name: `Admin Private Product ${suffix}`,
+      article: `AP-${suffix}`,
+      description: "Private product used for tenant isolation tests.",
+      photos: [],
+      retail_price: 99000,
+      wholesale_price: 88000,
+      quantity: 5,
+      category_id: adminCategory.id,
+      status: "active",
+    })
+    .select("id, name")
+    .single<{ id: string; name: string }>();
+
+  if (adminProductError || !adminProduct) {
+    throw new Error(
+      adminProductError?.message ?? "Failed to seed admin tenant product.",
+    );
+  }
+
   const { data: sellerTenant, error: sellerTenantError } = await admin
     .from("tenants")
     .insert({
@@ -311,8 +349,10 @@ export default async function globalSetup() {
       password: adminPassword,
     },
     adminTenant: {
+      categoryId: adminCategory.id,
       id: adminTenant.id,
       name: adminTenant.name,
+      productId: adminProduct.id,
       slug: adminTenant.slug,
     },
     adminClient: {
