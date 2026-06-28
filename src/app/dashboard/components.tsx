@@ -14,6 +14,7 @@ import {
 import { CategoryInlineCreate } from "./category-inline-create";
 import type { Category, Product, Tenant } from "./data";
 import { ProductPhotoInput } from "./product-photo-input";
+import { SubmitOnceButton, SubmitOnceForm } from "./submit-once-form";
 
 export const panelClass =
   "rounded-2xl border border-slate-200 bg-white p-4 shadow-sm";
@@ -220,7 +221,7 @@ export function AddProductForm({
         </div>
       ) : null}
 
-      <form action={addProduct} className="mt-5 grid gap-3">
+      <SubmitOnceForm action={addProduct} className="mt-5 grid gap-3">
         <label className={labelClass}>
           Название товара
           <input
@@ -297,10 +298,13 @@ export function AddProductForm({
           </div>
         </details>
 
-        <button className="h-11 rounded-2xl bg-slate-950 px-5 font-semibold text-white shadow-lg shadow-slate-200 transition hover:bg-slate-800">
+        <SubmitOnceButton
+          className="h-11 rounded-2xl bg-slate-950 px-5 font-semibold text-white shadow-lg shadow-slate-200 transition hover:bg-slate-800 disabled:cursor-wait disabled:bg-slate-400 disabled:shadow-none disabled:hover:bg-slate-400"
+          pendingLabel="Добавляем..."
+        >
           Добавить товар
-        </button>
-      </form>
+        </SubmitOnceButton>
+      </SubmitOnceForm>
     </section>
   );
 }
