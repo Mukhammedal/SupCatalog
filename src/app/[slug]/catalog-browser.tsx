@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 
 const PRODUCTS_PER_PAGE = 12;
 
@@ -290,6 +290,7 @@ export function CatalogBrowser({
   const [maxPrice, setMaxPrice] = useState(initialFilters.max ?? "");
   const [stock, setStock] = useState(initialFilters.stock ?? "");
   const [currentPage, setCurrentPage] = useState(1);
+  const catalogTopRef = useRef<HTMLDivElement>(null);
   const basePath = catalogPath(tenant.slug, mode);
   const alternateHref =
     mode === "retail" ? `/${tenant.slug}/opt` : `/${tenant.slug}`;
@@ -358,8 +359,16 @@ export function CatalogBrowser({
     setCurrentPage(1);
   }
 
+  function changePage(page: number) {
+    setCurrentPage(page);
+    catalogTopRef.current?.scrollIntoView({ block: "start" });
+  }
+
   return (
-    <div className="grid w-full min-w-0 gap-3 overflow-hidden lg:grid-cols-[240px_minmax(0,1fr)] xl:grid-cols-[260px_minmax(0,1fr)] xl:gap-6">
+    <div
+      className="grid w-full min-w-0 gap-3 overflow-hidden lg:grid-cols-[240px_minmax(0,1fr)] xl:grid-cols-[260px_minmax(0,1fr)] xl:gap-6"
+      ref={catalogTopRef}
+    >
       <aside className="min-w-0 lg:self-start">
         <div className="overflow-hidden rounded-[1.15rem] border border-slate-200 bg-white shadow-[0_10px_24px_rgba(15,23,42,0.04)]">
           <div className="border-b border-slate-100 p-3 sm:p-3">
@@ -486,7 +495,7 @@ export function CatalogBrowser({
             </div>
             <Pagination
               currentPage={safeCurrentPage}
-              onPageChange={setCurrentPage}
+              onPageChange={changePage}
               totalPages={totalPages}
             />
           </>
