@@ -4,6 +4,11 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Платформа каталогов",
   description: "SaaS-платформа каталогов с подпиской",
+  icons: {
+    apple: "/apple-icon.png",
+    icon: "/icon.png",
+    shortcut: "/icon.png",
+  },
 };
 
 export default function RootLayout({

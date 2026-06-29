@@ -410,6 +410,14 @@ test("storefront account link is scoped to the current seller", async ({
   await page.goto(`/${state.seller.tenantSlug}`);
   await expect(page.getByRole("link", { name: "Войти" })).toBeVisible();
   await expect(page.getByRole("link", { name: "Панель" })).toHaveCount(0);
+  await page.getByRole("link", { name: "Войти" }).click();
+  await expect(page).toHaveURL(/\/login\?.*seller=1.*tenant=|\/login\?.*tenant=.*seller=1/);
+  await expect(page.getByRole("heading", { name: "Войти" })).toBeVisible();
+  await page.goto("/admin");
+  await expect(page).toHaveURL(/\/login$/);
+
+  await login(page, state.admin.email, state.admin.password);
+  await expect(page).toHaveURL(/\/admin$/);
 
   await page.goto(`/${state.seller.tenantSlug}/opt`);
   await expect(page.getByRole("link", { name: "Войти" })).toBeVisible();

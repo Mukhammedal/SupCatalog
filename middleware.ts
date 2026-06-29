@@ -21,6 +21,14 @@ function redirectTo(request: NextRequest, pathname: string) {
   return NextResponse.redirect(url);
 }
 
+function redirectToSellerLogin(request: NextRequest) {
+  const url = request.nextUrl.clone();
+  url.pathname = "/login/seller";
+  url.searchParams.delete("seller");
+  url.searchParams.delete("error");
+  return NextResponse.redirect(url);
+}
+
 export async function middleware(request: NextRequest) {
   let response = NextResponse.next({
     request,
@@ -54,6 +62,8 @@ export async function middleware(request: NextRequest) {
 
   const pathname = request.nextUrl.pathname;
   const isLogin = pathname === "/login";
+  const isSellerLogin =
+    isLogin && request.nextUrl.searchParams.get("seller") === "1";
   const isAdmin = pathname.startsWith("/admin");
   const isDashboard = pathname.startsWith("/dashboard");
 
@@ -63,6 +73,10 @@ export async function middleware(request: NextRequest) {
     }
 
     return response;
+  }
+
+  if (isSellerLogin) {
+    return redirectToSellerLogin(request);
   }
 
   const { data: profile } = await supabase

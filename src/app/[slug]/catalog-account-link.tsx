@@ -10,6 +10,14 @@ type AccountLinkState = {
   loading: boolean;
 };
 
+function sellerLoginHref(tenantId: string) {
+  const params = new URLSearchParams({
+    tenant: tenantId,
+  });
+
+  return `/login/seller?${params.toString()}`;
+}
+
 export function CatalogAccountLink({ tenantId }: { tenantId: string }) {
   const [state, setState] = useState<AccountLinkState>({
     href: "#",
@@ -32,7 +40,7 @@ export function CatalogAccountLink({ tenantId }: { tenantId: string }) {
 
       if (!session?.user) {
         setState({
-          href: "/login?seller=1",
+          href: sellerLoginHref(tenantId),
           label: "Войти",
           loading: false,
         });
@@ -51,7 +59,7 @@ export function CatalogAccountLink({ tenantId }: { tenantId: string }) {
 
       if (!profile || profile.role !== "client" || profile.tenant_id !== tenantId) {
         setState({
-          href: "/login?seller=1",
+          href: sellerLoginHref(tenantId),
           label: "Войти",
           loading: false,
         });

@@ -6,12 +6,14 @@ const errorMessages: Record<string, string> = {
   empty: "Введите email и пароль.",
   invalid: "Неверный email или пароль.",
   "no-profile": "Аккаунт найден, но роль ещё не настроена.",
+  "wrong-tenant": "Этот аккаунт не привязан к выбранному каталогу.",
 };
 
 type LoginPageProps = {
   searchParams: Promise<{
     error?: string;
     seller?: string;
+    tenant?: string;
   }>;
 };
 
@@ -58,6 +60,13 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
           action={login}
           className="mt-7 rounded-[1.35rem] border border-white/80 bg-white p-4 shadow-[0_22px_70px_rgba(15,23,42,0.12)] sm:mt-10 sm:rounded-[1.75rem] sm:p-6 lg:mt-0"
         >
+          {isSellerLogin ? (
+            <input name="sellerLogin" type="hidden" value="1" />
+          ) : null}
+          {params.tenant ? (
+            <input name="tenantId" type="hidden" value={params.tenant} />
+          ) : null}
+
           <div className="mb-5 border-b border-slate-100 pb-4 sm:mb-6 sm:pb-5">
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
               Доступ
