@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import Link from "next/link";
 import { getCurrentProfile, pathForRole } from "@/lib/auth";
 import { login } from "./actions";
 
@@ -110,6 +111,15 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
           >
             Войти
           </button>
+
+          {isSellerLogin ? (
+            <Link
+              className="mt-4 flex h-11 w-full items-center justify-center rounded-2xl border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-600 transition hover:bg-slate-50"
+              href="/login"
+            >
+              Вход администратора
+            </Link>
+          ) : null}
         </form>
       </section>
     </main>

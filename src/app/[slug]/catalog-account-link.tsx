@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 
@@ -81,7 +80,7 @@ export function CatalogAccountLink({ tenantId }: { tenantId: string }) {
   }, [tenantId]);
 
   return (
-    <Link
+    <a
       aria-disabled={state.loading}
       className={`inline-flex h-10 min-w-[76px] items-center justify-center rounded-2xl px-4 text-sm shadow-sm transition sm:h-11 sm:min-w-[96px] sm:px-5 ${
         state.loading
@@ -91,6 +90,6 @@ export function CatalogAccountLink({ tenantId }: { tenantId: string }) {
       href={state.href}
     >
       {state.label}
-    </Link>
+    </a>
   );
 }
