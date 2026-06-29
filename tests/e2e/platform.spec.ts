@@ -156,7 +156,7 @@ test("full platform flow from admin to buyer order", async ({ page }) => {
 
   await page.getByRole("link", { name: "Назад к каталогу" }).click();
   await page.getByRole("button", { name: "В корзину" }).click();
-  await expect(page.getByRole("button", { name: /Корзина · 1/ })).toBeVisible();
+  await page.getByRole("button", { name: /Корзина · 1/ }).click();
   await expect(page.getByText(productName).last()).toBeVisible();
 
   await page.evaluate(() => {

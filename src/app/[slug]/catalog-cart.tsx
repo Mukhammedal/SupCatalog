@@ -91,7 +91,6 @@ export function CatalogCart({
 
         return [...currentItems, { ...product, count: nextCount }];
       });
-      setIsOpen(true);
     },
     [productsById],
   );
