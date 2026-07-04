@@ -56,24 +56,6 @@ function productSearchText(product: Product) {
     .toLowerCase();
 }
 
-function productErrorMessage(error?: string) {
-  switch (error) {
-    case "category":
-      return "Категория не найдена для этого магазина. Обновите страницу и выберите категорию ещё раз.";
-    case "too-many":
-      return "Можно оставить максимум 12 фото.";
-    case "too-large":
-      return "Одно из фото больше 8 MB. Выбери файл меньше.";
-    case "storage":
-    case "upload":
-      return "Фото не загрузились. Попробуй ещё раз.";
-    case "save":
-      return "Товар не сохранился. Попробуй ещё раз.";
-    default:
-      return null;
-  }
-}
-
 function ProductArchiveForm({
   confirmArchiveId,
   product,
@@ -338,18 +320,15 @@ function ProductCard({
 
 export function ProductList({
   categories,
-  error,
   products,
 }: {
   categories: Category[];
-  error?: string;
   products: Product[];
 }) {
   const [query, setQuery] = useState("");
   const [statusFilter, setStatusFilter] =
     useState<ProductStatusFilter>("all");
   const [confirmArchiveId, setConfirmArchiveId] = useState<string | null>(null);
-  const errorMessage = productErrorMessage(error);
 
   const activeCount = products.filter(
     (product) => product.status === "active",
@@ -372,12 +351,6 @@ export function ProductList({
 
   return (
     <section className="grid max-w-[1120px] gap-3">
-      {errorMessage ? (
-        <div className="rounded-[1.25rem] border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-semibold text-rose-700">
-          {errorMessage}
-        </div>
-      ) : null}
-
       <div className="rounded-[1.25rem] border border-slate-200 bg-white p-3 shadow-sm">
         <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
           <label>

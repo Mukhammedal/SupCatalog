@@ -31,31 +31,6 @@ function nullableUuid(value: FormDataEntryValue | null) {
   return normalized ? normalized : null;
 }
 
-async function productCategoryId(
-  supabase: Awaited<ReturnType<typeof createClient>>,
-  tenantId: string,
-  value: FormDataEntryValue | null,
-) {
-  const categoryId = nullableUuid(value);
-
-  if (!categoryId) {
-    return null;
-  }
-
-  const { data, error } = await supabase
-    .from("categories")
-    .select("id")
-    .eq("id", categoryId)
-    .eq("tenant_id", tenantId)
-    .maybeSingle<{ id: string }>();
-
-  if (error || !data) {
-    return undefined;
-  }
-
-  return data.id;
-}
-
 function safeFileName(name: string) {
   return name
     .toLowerCase()
@@ -291,15 +266,6 @@ export async function addProduct(formData: FormData) {
   }
 
   const supabase = await createClient();
-  const categoryId = await productCategoryId(
-    supabase,
-    profile.tenant_id,
-    formData.get("categoryId"),
-  );
-
-  if (categoryId === undefined) {
-    redirect("/dashboard/products/new?error=category");
-  }
 
   const { error } = await supabase.from("products").insert({
     tenant_id: profile.tenant_id,
@@ -310,7 +276,7 @@ export async function addProduct(formData: FormData) {
     retail_price: numberValue(formData.get("retailPrice")),
     wholesale_price: numberValue(formData.get("wholesalePrice")),
     quantity: Math.max(0, Math.floor(numberValue(formData.get("quantity")))),
-    category_id: categoryId,
+    category_id: nullableUuid(formData.get("categoryId")),
     status: "active",
   });
 
@@ -351,39 +317,23 @@ export async function updateProduct(formData: FormData) {
     redirect(`/dashboard/products?error=${uploadErrorCode(error)}`);
   }
 
-  if (!productId) {
-    redirect("/dashboard/products?error=save");
-  }
-
-  const supabase = await createClient();
-  const categoryId = await productCategoryId(
-    supabase,
-    profile.tenant_id,
-    formData.get("categoryId"),
-  );
-
-  if (categoryId === undefined) {
-    redirect("/dashboard/products?error=category");
-  }
-
-  const { error } = await supabase
-    .from("products")
-    .update({
-      name: stringValue(formData.get("name")),
-      article: stringValue(formData.get("article")) || null,
-      description: stringValue(formData.get("description")) || null,
-      photos: [...existingPhotos, ...newPhotos],
-      retail_price: numberValue(formData.get("retailPrice")),
-      wholesale_price: numberValue(formData.get("wholesalePrice")),
-      quantity: Math.max(0, Math.floor(numberValue(formData.get("quantity")))),
-      category_id: categoryId,
-      status: stringValue(formData.get("status")) === "archived" ? "archived" : "active",
-    })
-    .eq("id", productId)
-    .eq("tenant_id", profile.tenant_id);
-
-  if (error) {
-    redirect("/dashboard/products?error=save");
+  if (productId) {
+    const supabase = await createClient();
+    await supabase
+      .from("products")
+      .update({
+        name: stringValue(formData.get("name")),
+        article: stringValue(formData.get("article")) || null,
+        description: stringValue(formData.get("description")) || null,
+        photos: [...existingPhotos, ...newPhotos],
+        retail_price: numberValue(formData.get("retailPrice")),
+        wholesale_price: numberValue(formData.get("wholesalePrice")),
+        quantity: Math.max(0, Math.floor(numberValue(formData.get("quantity")))),
+        category_id: nullableUuid(formData.get("categoryId")),
+        status: stringValue(formData.get("status")) === "archived" ? "archived" : "active",
+      })
+      .eq("id", productId)
+      .eq("tenant_id", profile.tenant_id);
   }
 
   revalidateDashboard();

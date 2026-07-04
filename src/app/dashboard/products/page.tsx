@@ -3,14 +3,7 @@ import { DashboardShell } from "../components";
 import { getSellerDashboardData } from "../data";
 import { ProductList } from "../product-list";
 
-type ProductsPageProps = {
-  searchParams: Promise<{
-    error?: string;
-  }>;
-};
-
-export default async function ProductsPage({ searchParams }: ProductsPageProps) {
-  const params = await searchParams;
+export default async function ProductsPage() {
   const { categories, expired, products, profile, tenant } =
     await getSellerDashboardData();
 
@@ -34,11 +27,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
         </Link>
       </div>
 
-      <ProductList
-        categories={categories}
-        error={params.error}
-        products={products}
-      />
+      <ProductList categories={categories} products={products} />
     </DashboardShell>
   );
 }

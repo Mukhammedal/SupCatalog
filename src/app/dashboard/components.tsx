@@ -206,9 +206,7 @@ export function AddProductForm({
             ? "Товар не сохранился. Попробуй ещё раз."
             : error === "upload"
               ? "Фото не загрузились. Попробуй ещё раз."
-              : error === "category"
-                ? "Категория не найдена для этого магазина. Обновите страницу и выберите категорию ещё раз."
-                : null;
+              : null;
 
   return (
     <section className="mx-auto w-full max-w-[780px] rounded-[1.25rem] border border-slate-200 bg-white p-4 shadow-[0_10px_26px_rgba(15,23,42,0.045)] sm:p-5">
