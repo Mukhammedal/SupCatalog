@@ -3,9 +3,33 @@ import { DashboardShell } from "../components";
 import { getSellerDashboardData } from "../data";
 import { ProductList } from "../product-list";
 
-export default async function ProductsPage() {
+type ProductsPageProps = {
+  searchParams: Promise<{
+    error?: string;
+  }>;
+};
+
+function productErrorMessage(error?: string) {
+  switch (error) {
+    case "too-many":
+      return "Можно оставить максимум 12 фото.";
+    case "too-large":
+      return "Одно из фото больше 8 MB. Выбери файл меньше.";
+    case "storage":
+    case "upload":
+      return "Фото не загрузились. Попробуй ещё раз.";
+    case "save":
+      return "Товар не сохранился. Проверь категорию и попробуй ещё раз.";
+    default:
+      return null;
+  }
+}
+
+export default async function ProductsPage({ searchParams }: ProductsPageProps) {
+  const params = await searchParams;
   const { categories, expired, products, profile, tenant } =
     await getSellerDashboardData();
+  const errorMessage = productErrorMessage(params.error);
 
   return (
     <DashboardShell
@@ -26,6 +50,12 @@ export default async function ProductsPage() {
           Добавить товар
         </Link>
       </div>
+
+      {errorMessage ? (
+        <div className="mb-4 max-w-[1120px] rounded-[1.25rem] border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-semibold text-rose-700">
+          {errorMessage}
+        </div>
+      ) : null}
 
       <ProductList categories={categories} products={products} />
     </DashboardShell>
