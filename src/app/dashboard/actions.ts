@@ -63,6 +63,28 @@ function revalidateDashboard() {
   revalidatePath("/dashboard/settings");
 }
 
+async function revalidateSellerData(tenantId: string | null) {
+  revalidateDashboard();
+
+  if (!tenantId) {
+    return;
+  }
+
+  const supabase = await createClient();
+  const { data: tenant } = await supabase
+    .from("tenants")
+    .select("slug")
+    .eq("id", tenantId)
+    .maybeSingle<{ slug: string }>();
+
+  if (!tenant?.slug) {
+    return;
+  }
+
+  revalidatePath(`/${tenant.slug}`);
+  revalidatePath(`/${tenant.slug}/opt`);
+}
+
 function uploadErrorCode(error: unknown) {
   return error instanceof UploadError ? error.code : "upload";
 }
@@ -129,7 +151,7 @@ export async function addCategory(formData: FormData) {
     });
   }
 
-  revalidateDashboard();
+  await revalidateSellerData(profile.tenant_id);
   redirect("/dashboard/categories");
 }
 
@@ -145,7 +167,7 @@ export async function addCategoryFromProductForm(formData: FormData) {
     });
   }
 
-  revalidateDashboard();
+  await revalidateSellerData(profile.tenant_id);
   redirect("/dashboard/products/new");
 }
 
@@ -180,7 +202,7 @@ export async function createCategoryFromProductForm(name: string) {
     };
   }
 
-  revalidateDashboard();
+  await revalidateSellerData(profile.tenant_id);
 
   return {
     message: "Категория добавлена.",
@@ -201,7 +223,7 @@ export async function deleteCategory(formData: FormData) {
       .eq("tenant_id", profile.tenant_id);
   }
 
-  revalidateDashboard();
+  await revalidateSellerData(profile.tenant_id);
   redirect("/dashboard/categories");
 }
 
@@ -241,7 +263,7 @@ export async function updateStorefront(formData: FormData) {
     redirect("/dashboard/settings?error=save");
   }
 
-  revalidateDashboard();
+  await revalidateSellerData(profile.tenant_id);
   redirect("/dashboard/settings?saved=1");
 }
 
@@ -284,7 +306,7 @@ export async function addProduct(formData: FormData) {
     redirect("/dashboard/products/new?error=save");
   }
 
-  revalidateDashboard();
+  await revalidateSellerData(profile.tenant_id);
   redirect("/dashboard/products");
 }
 
@@ -319,7 +341,7 @@ export async function updateProduct(formData: FormData) {
 
   if (productId) {
     const supabase = await createClient();
-    await supabase
+    const { error } = await supabase
       .from("products")
       .update({
         name: stringValue(formData.get("name")),
@@ -334,9 +356,13 @@ export async function updateProduct(formData: FormData) {
       })
       .eq("id", productId)
       .eq("tenant_id", profile.tenant_id);
+
+    if (error) {
+      redirect("/dashboard/products?error=save");
+    }
   }
 
-  revalidateDashboard();
+  await revalidateSellerData(profile.tenant_id);
   redirect("/dashboard/products");
 }
 
@@ -353,7 +379,7 @@ export async function archiveProduct(formData: FormData) {
       .eq("tenant_id", profile.tenant_id);
   }
 
-  revalidateDashboard();
+  await revalidateSellerData(profile.tenant_id);
   redirect("/dashboard/products");
 }
 
@@ -370,6 +396,6 @@ export async function activateProduct(formData: FormData) {
       .eq("tenant_id", profile.tenant_id);
   }
 
-  revalidateDashboard();
+  await revalidateSellerData(profile.tenant_id);
   redirect("/dashboard/products");
 }
